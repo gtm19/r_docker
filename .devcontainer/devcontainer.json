@@ -50,6 +50,8 @@
 	// add devcontainer.env file
 	"runArgs": ["--env-file",".devcontainer/devcontainer.env"],
 
+	"postStartCommand": ["Rscript", "-e", "if (file.exists('renv.lock')) try(renv::restore())"],
+
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }

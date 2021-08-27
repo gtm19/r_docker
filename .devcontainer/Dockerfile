@@ -1,4 +1,4 @@
-# R version: latest, ... , 4.0.3
+# R version: latest, ... , 4.0.3 (will be overwritten by whatever is specified in devcontainer.json)
 ARG VARIANT="latest"
 FROM rocker/r-ver:${VARIANT}
 
@@ -31,6 +31,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         languageserver \
         httpgd \
     && rm -rf /tmp/downloaded_packages
+
+# renv setup
+RUN install2.r renv 
+
 
 # R Session watcher settings.
 # See more details: https://github.com/REditorSupport/vscode-R/wiki/R-Session-watcher
