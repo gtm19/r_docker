@@ -55,4 +55,5 @@ RUN echo 'source(file.path(Sys.getenv("HOME"), ".vscode-R", "init.R"))' >> ${R_H
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update \
 #     && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+#     && apt-get -y install --no-install-recommends \
+#         <packages>
