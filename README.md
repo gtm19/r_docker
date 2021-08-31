@@ -2,6 +2,38 @@
 
 # Pre-requisites
 
+## `.Rprofile`
+
+Note that, once `renv` is activated, useful system R libraries like `languageserver` will not be available. As such, much like `renv` is installed on startup of the R terminal if not available (due to the `source("renv/activate.R")` call which `renv` places in the `.Rprofile` on initialisation), I have (following Eric Nantz's [example](https://github.com/rpodcast/r_dev_projects/blob/master/.devcontainer/README.md#using-renv-with-vs-code)) added some additional code to the `.Rprofile` which will install `languageserver` and `httpgd` if they are missing:
+
+```r
+# setup if using with vscode and R plugin
+if (Sys.getenv("TERM_PROGRAM") == "vscode") {
+    source(file.path(Sys.getenv(if (.Platform$OS.type == "windows") "USERPROFILE" else "HOME"), ".vscode-R", "init.R"))
+}
+
+source("renv/activate.R")
+
+if (Sys.getenv("TERM_PROGRAM") == "vscode") {
+    # obtain list of packages in renv library currently
+    project <- renv:::renv_project_resolve(NULL)
+    lib_packages <- names(unclass(renv:::renv_diagnostics_packages_library(project))$Packages)
+
+    # detect whether key packages are already installed
+    # was: !require("languageserver")
+    if (!"languageserver" %in% lib_packages) {
+        message("installing languageserver package")
+        renv::install("languageserver")
+    }
+
+    if (!"httpgd" %in% lib_packages) {
+        message("installing httpgd package")
+        renv::install("httpgd")
+    }
+}
+
+```
+
 ## `ssh-agent`
 
 If you authenticate `git` operations using SSH, you will need to ensure that `ssh-agent` is running locally, and that the relevant keys have been added to it, so that the VS Code Remote Container extension can forward it to the dev container.
